@@ -1,0 +1,17 @@
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+
+!*.go
+!go.sum
+!go.mod
+
+!README.adoc
+
+# ...even if they are in subdirectories
+!*/
+
+# ...and defer to .gitignore in these folders
+!.idea/**
