@@ -16,4 +16,3 @@
 
 # ...and defer to .gitignore in these folders
 !.idea/**
-!bin/**
