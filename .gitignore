@@ -9,9 +9,11 @@
 !go.mod
 
 !README.adoc
+!Makefile
 
 # ...even if they are in subdirectories
 !*/
 
 # ...and defer to .gitignore in these folders
 !.idea/**
+!bin/**
