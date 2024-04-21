@@ -1,9 +1,11 @@
 sizes = 10 100 1000 10000 100000 1000000
+naive_timings = $(foreach var,$(sizes),-file bin/timing-naive-$(var).txt)
+timings = $(naive_timings)
 
 .PHONY: all
 all: $(sizes) bin/report
 	@ echo "generating summary report..."
-	@ bin/report $(foreach var,$(sizes),-file bin/timing-$(var).txt)
+	@ bin/report $(timings)
 
 bin/create_measurements: $(wildcard cmd/create_measurements/*.go)
 	@ go build -o bin/create_measurements ./cmd/create_measurements
@@ -17,8 +19,8 @@ bin/report: $(wildcard cmd/report/*.go)
 $(sizes): bin/create_measurements bin/calculate_average
 	@ echo "creating $@ measurements..."
 	@ bin/create_measurements -file bin/measurements-$@.txt -size $@
-	@ echo "calculating averages for $@ measurements..."
-	@ bin/calculate_average -in bin/measurements-$@.txt -result bin/result-$@.txt -timing bin/timing-$@.txt
+	@ echo "calculating averages with naive mode for $@ measurements..."
+	@ bin/calculate_average -use naive -in bin/measurements-$@.txt -result bin/result-naive-$@.txt -timing bin/timing-naive-$@.txt
 
 .PHONY: clean
 clean:

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"text/tabwriter"
 )
 
 type Slice struct {
@@ -32,12 +33,18 @@ func main() {
 	flag.Var(&slice, "file", "location(s) of timing file(s) to include in report")
 	flag.Parse()
 
+	writer := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
 	for _, element := range slice.elements {
 		data, err := os.ReadFile(element)
 		if err != nil {
 			panic(err)
 		}
 
-		fmt.Printf("%s\t\t%s\n", element, data)
+		if _, err = fmt.Fprintf(writer, "%s\t%s\n", element, data); err != nil {
+			panic(err)
+		}
+	}
+	if err := writer.Flush(); err != nil {
+		panic(err)
 	}
 }
